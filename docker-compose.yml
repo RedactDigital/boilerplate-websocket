@@ -1,0 +1,26 @@
+# Initializes a new nodejs project with docker
+
+version: '3.7'
+services:
+  websocket-server:
+    build:
+      args:
+        user: websocket
+        uid: 9999
+      context: ./
+      dockerfile: Dockerfile
+    image: websocket-server
+    container_name: websocket-server
+    restart: unless-stopped
+    working_dir: /var/www
+    command: sh -c "npm i --no-audit && npm start"
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - ./:/var/www
+    networks:
+      - websocket
+
+networks:
+  websocket:
+    driver: bridge
